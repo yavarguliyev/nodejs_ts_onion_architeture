@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  postgres-db:
+    image: postgres:14.3-alpine
+    container_name: ${CONTAINER_NAME_PREFIX_BACKEND}_postgres-db
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    healthcheck:
+      test: "pg_isready -U ${DB_USER} -d ${DB_USER}"
+      interval: 60s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "100m"
+    networks:
+      - ${CONTAINER_NAME_PREFIX_BACKEND}
+
+volumes:
+  postgres-db:
+
+networks:
+  backend-common:
+    driver: bridge
