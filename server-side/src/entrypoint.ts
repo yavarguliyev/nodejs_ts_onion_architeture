@@ -1,7 +1,7 @@
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import bodyParser from 'body-parser';
-import { config } from './Config/main';
+import { config } from './Helpers/Config/main';
 import './Api/Controllers'
 import { Application as ExpressApplication } from 'express';
 
