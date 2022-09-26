@@ -7,4 +7,4 @@ export const TYPES = {
 
   // Unit of work
   UnitOfWork: Symbol('UnitOfWork')
-};
+}

@@ -1,4 +1,4 @@
-import { IUserRepository } from "./Repositories/IUser.Repository";
+import { IUserRepository } from './Repositories/IUser.Repository'
 
 export interface IUnitOfWork {
   User: IUserRepository;

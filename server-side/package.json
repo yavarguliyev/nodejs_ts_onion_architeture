@@ -4,7 +4,14 @@
   "description": "Doccure",
   "main": "dist/index.js",
   "scripts": {
-    "start:dev": "nodemon"
+    "clean:dist": "rimraf dist/*",
+    "lint:once": "eslint --ext .ts src",
+    "lint:fix": "npm run lint:once --fix",
+    "fix": "npm run lint:fix",
+    "lint": "esw --watch --ext .ts src",
+    "build": "npm run clean:dist && tsc",
+    "start": "npm run build && nodemon",
+    "start:dev": "ts-node-dev src/index.ts"
   },
   "keywords": [],
   "author": "Yavar Guliyev",
@@ -14,10 +21,23 @@
     "express": "^4.18.1",
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.14",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "concurrently": "^7.4.0",
+    "eslint": "^8.24.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.1",
+    "eslint-watch": "^8.0.0",
     "nodemon": "^2.0.20",
     "typescript": "^4.8.3"
   }
