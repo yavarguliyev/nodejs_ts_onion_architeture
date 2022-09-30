@@ -1,48 +1,45 @@
-import { Container } from 'inversify'
-import { InversifyExpressServer } from 'inversify-express-utils'
-import bodyParser from 'body-parser'
-import { Application as ExpressApplication } from 'express'
+import { Container } from 'typedi'
+import { useContainer, ConnectionManager } from 'typeorm'
+import express from 'express'
+import cors from 'cors'
+import http from 'http'
 
 import { config } from './Helpers/Config/main'
-import './Api/Controllers'
-import { repositoriesContainerModule } from './Helpers/Repositories/container'
-import { servicesContainerModule } from './Helpers/Services/container'
-import { unitOfWorkContainerModule } from './Helpers/UnitOfWork/container'
-import { errorHandler } from './Api/Middlewares/ErrorHandler'
+import { DBContextOptionsFactory } from './Data/DataContext'
+import { configureServices } from './Helpers/IOC/Bindings'
 
 const { NODE_PORT, NODE_ENV } = config
 
 const initialize = async () => {
-  const container = new Container()
-  await container.loadAsync(repositoriesContainerModule)
-  await container.loadAsync(servicesContainerModule)
-  await container.loadAsync(unitOfWorkContainerModule)
+  Container.set({ id: ConnectionManager, type: ConnectionManager })
+  useContainer(Container)
 
-  // API Server initialisation
-  const server = new InversifyExpressServer(container)
+  const connectionOptions = await Container.get(
+    DBContextOptionsFactory
+  ).create()
 
-  server.setConfig((app: ExpressApplication) => {
-    app.use(
-      bodyParser.urlencoded({
-        extended: true
-      })
-    )
-    app.use(bodyParser.json())
-  })
+  await Container.get(ConnectionManager)
+    .create({ ...connectionOptions })
+    .connect()
 
-  server.setErrorConfig((app: ExpressApplication) => {
-    app.use(errorHandler)
-  })
+  const app = express()
 
-  const apiServer = server.build()
-  apiServer.listen(NODE_PORT, () =>
-  // eslint-disable-next-line no-console
+  app.use(express.json())
+
+  app.use(
+    cors({ credentials: true })
+  )
+
+  const httpServer = http.createServer(app)
+
+  httpServer.listen({ port: NODE_PORT }, () =>
+    // eslint-disable-next-line no-console
     console.log(
       `=== 🕵  Server️ running in ${NODE_ENV} mode on port http://localhost:${NODE_PORT} ===`
     )
   )
 
-  return container
+  configureServices()
 }
 
 export { initialize }

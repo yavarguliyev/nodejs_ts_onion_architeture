@@ -117,3 +117,5 @@ migrations/*.js
 fixtures/*.js
 migrations/pureFunctions/*.js
 .DS_Store
+
+docker

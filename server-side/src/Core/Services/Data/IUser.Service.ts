@@ -1,1 +1,1 @@
-export interface IUserService {}
+export interface IUserService { }

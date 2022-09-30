@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import { initialize } from './entrypoint'
 
-(async () => {
-  await initialize()
-})()
+/* eslint-disable-next-line no-console */
+initialize().catch((error) => console.error(error))

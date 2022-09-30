@@ -1,7 +1,5 @@
-import { injectable } from 'inversify'
-
 import { IUserRepository } from '../../Core/Repositories/IUser.Repository'
 import { Repository } from './Repository'
+import User from '../../Core/Entities/User'
 
-@injectable()
-export class UserRepository extends Repository<any> implements IUserRepository {}
+export class UserRepository extends Repository<User> implements IUserRepository { }
