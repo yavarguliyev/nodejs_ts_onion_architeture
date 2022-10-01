@@ -1,5 +1,8 @@
+import { Service } from 'typedi'
+
 import { IUserRepository } from '../../Core/Repositories/IUser.Repository'
-import { Repository } from './Repository'
+import { BaseRepository } from './BaseRepository'
 import User from '../../Core/Entities/User'
 
-export class UserRepository extends Repository<User> implements IUserRepository { }
+@Service()
+export class UserRepository extends BaseRepository<User> implements IUserRepository { }

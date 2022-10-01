@@ -7,6 +7,7 @@ import http from 'http'
 import { config } from './Helpers/Config/main'
 import { DBContextOptionsFactory } from './Data/DataContext'
 import { configureServices } from './Helpers/IOC/Bindings'
+import { ApolloServerService } from './Helpers/Infrastructure/ApolloServer.Service'
 
 const { NODE_PORT, NODE_ENV } = config
 
@@ -21,6 +22,10 @@ const initialize = async () => {
   await Container.get(ConnectionManager)
     .create({ ...connectionOptions })
     .connect()
+  
+  const apolloServer = await Container
+    .get(ApolloServerService)
+    .get()
 
   const app = express()
 
@@ -30,12 +35,15 @@ const initialize = async () => {
     cors({ credentials: true })
   )
 
+  await apolloServer.start()
+
+  apolloServer.applyMiddleware({ app })
   const httpServer = http.createServer(app)
 
   httpServer.listen({ port: NODE_PORT }, () =>
     // eslint-disable-next-line no-console
     console.log(
-      `=== 🕵  Server️ running in ${NODE_ENV} mode on port http://localhost:${NODE_PORT} ===`
+      `=== 🕵  Server️ running in ${NODE_ENV} mode on port http://localhost:${NODE_PORT}/graphql ===`
     )
   )
 

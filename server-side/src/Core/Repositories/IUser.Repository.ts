@@ -1,4 +1,4 @@
 import User from '../Entities/User'
-import { IRepository } from './IRepository'
+import { IBaseRepository } from './IBaseRepository'
 
-export interface IUserRepository extends IRepository<User> {}
+export interface IUserRepository extends IBaseRepository<User> { }
