@@ -4,10 +4,10 @@ import express from 'express'
 import cors from 'cors'
 import http from 'http'
 
-import { config } from './Helpers/Config/main'
-import { DBContextOptionsFactory } from './Data/DataContext'
-import { configureServices } from './Helpers/IOC/Bindings'
-import { ApolloServerService } from './Helpers/Infrastructure/ApolloServer.Service'
+import { config } from 'Helpers/Config/main'
+import { DBContextOptionsFactory } from 'Data/DataContext'
+import { configureServices } from 'Helpers/IOC/Bindings'
+import { ApolloServerService } from 'Helpers/Infrastructure/ApolloServer.Service'
 
 const { NODE_PORT, NODE_ENV } = config
 
@@ -15,28 +15,19 @@ const initialize = async () => {
   Container.set({ id: ConnectionManager, type: ConnectionManager })
   useContainer(Container)
 
-  const connectionOptions = await Container.get(
-    DBContextOptionsFactory
-  ).create()
+  const connectionOptions = await Container.get(DBContextOptionsFactory).create()
 
-  await Container.get(ConnectionManager)
-    .create({ ...connectionOptions })
-    .connect()
-  
-  const apolloServer = await Container
-    .get(ApolloServerService)
-    .get()
+  await Container.get(ConnectionManager).create({ ...connectionOptions }).connect()
+
+  const apolloServer = await Container.get(ApolloServerService).get()
 
   const app = express()
 
   app.use(express.json())
 
-  app.use(
-    cors({ credentials: true })
-  )
+  app.use(cors({ credentials: true }))
 
   await apolloServer.start()
-
   apolloServer.applyMiddleware({ app })
   const httpServer = http.createServer(app)
 

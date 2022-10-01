@@ -1,4 +1,4 @@
-import {ApolloServerPlugin } from 'apollo-server-plugin-base'
+import { ApolloServerPlugin } from 'apollo-server-plugin-base'
 
 class LoggingPlugin implements ApolloServerPlugin { }
 

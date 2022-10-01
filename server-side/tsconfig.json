@@ -66,11 +66,9 @@
   },
   "include": [
     "."
-, "../Migrations"  ],
+  ],
   "exclude": [
     "node_modules",
-    "migrations",
-    "scripts",
-    "tests"
+    "migrations"
   ],
 }

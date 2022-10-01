@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "server-side",
   "version": "1.0.0",
   "description": "Doccure",
@@ -21,8 +22,8 @@
     "fix": "npm run lint:fix",
     "lint": "esw --watch --ext .ts src",
     "build": "npm run clean:dist && tsc",
-    "start": "npm run build && nodemon",
-    "start:dev": "ts-node-dev src/index.ts"
+    "start:tsclint": "npm run clean:dist && concurrently --kill-others --names lint,tsc,nodemon --prefix-colors green,blue,yellow \"npm run lint\" \"tsc --preserveWatchOutput --watch\"",
+    "start": "npm run start:tsclint \"sleep 8 && nodemon\""
   },
   "keywords": [],
   "author": "Yavar Guliyev",
@@ -54,6 +55,7 @@
     "@types/express": "^4.17.14",
     "@types/graphql-upload": "^8.0.4",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "^18.7.23",
     "@types/passport": "^1.0.11",
     "@types/passport-jwt": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
@@ -62,6 +64,7 @@
     "eslint": "^8.24.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-node": "^11.1.0",

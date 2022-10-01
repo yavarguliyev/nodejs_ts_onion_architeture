@@ -1,5 +1,5 @@
-import User from "../../../Core/Entities/User";
+import User from 'Core/Entities/User'
 
-export interface IUserService { 
+export interface IUserService {
   getAll(): Promise<User[]>
 }

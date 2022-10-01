@@ -1,8 +1,8 @@
 import { Service } from 'typedi'
 import { getConnectionOptions, ConnectionOptions } from 'typeorm'
 
-import { config } from '../Helpers/Config/main'
-import User from '../Core/Entities/User'
+import { config } from 'Helpers/Config/main'
+import User from 'Core/Entities/User'
 
 const { DB_CONNECTION } = config
 

@@ -1,10 +1,10 @@
 import { Service, Container } from 'typedi'
 import { ApolloServer, UserInputError } from 'apollo-server-express'
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 import { GraphQLSchema, GraphQLError, GraphQLFormattedError } from 'graphql'
 import { buildSchema, ArgumentValidationError } from 'type-graphql'
 
-import { UserResolver } from '../../Resolvers/User.Resolver'
+import { UserResolver } from 'Resolvers/User.Resolver'
 
 export interface IApolloServerService {
   get (): Promise<ApolloServer>
@@ -14,7 +14,7 @@ export interface IApolloServerService {
 export class ApolloServerService implements IApolloServerService {
   private server: ApolloServer
 
-  public constructor () { }
+  public constructor () {}
 
   public async get (): Promise<ApolloServer> {
     if (!this.server) {
@@ -37,13 +37,11 @@ export class ApolloServerService implements IApolloServerService {
   private formatError (error: GraphQLError): GraphQLFormattedError {
     const hasOriginalError = typeof error.originalError !== 'undefined'
 
-    // Apollo converts validation errors to internal errors, so I need to convert them back to UserInputErrors
     if (hasOriginalError && error.originalError instanceof ArgumentValidationError) {
       const { message, stack, ...data } = error.originalError
       return new UserInputError(message, { stack, ...data })
     }
 
-    // Remove server error details as we do not want to send them to clients
     if (typeof error.extensions !== 'undefined' && error.extensions.code === 'INTERNAL_SERVER_ERROR') {
       error.message = 'Internal server error'
       Object.keys(error.extensions).forEach(key => {

@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm'
 import { Field, ObjectType } from 'type-graphql'
 import { IsEmail, IsString, Length } from 'class-validator'
 
-import { BaseEntity } from '../../Helpers/Utils/BaseEntity'
+import { BaseEntity } from 'Helpers/Utils/BaseEntity'
 
 @Entity('users')
 @ObjectType()

@@ -32,6 +32,8 @@
       "@typescript-eslint"
   ],
   "rules": {
+    "indent": "off",
+    "space-before-function-paren": "off",
     "no-console": 1,
     "no-useless-constructor": 0,
     "no-dupe-class-members": 0,
