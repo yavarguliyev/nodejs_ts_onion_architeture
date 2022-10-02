@@ -26,7 +26,7 @@ export default class User extends BaseEntity {
   lastName: string
 
   @Field(() => String)
-  @Column({ name: 'password', type: 'varchar', nullable: true })
+  @Column({ name: 'password', type: 'varchar' })
   @IsString()
   @Length(8, 256)
   password: string

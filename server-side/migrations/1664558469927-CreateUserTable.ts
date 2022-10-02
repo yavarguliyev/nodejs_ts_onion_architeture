@@ -8,8 +8,8 @@ export class CreateUserTable1664558469927 implements MigrationInterface {
         await queryRunner.query(
             `CREATE TABLE users(
                       id SERIAL PRIMARY KEY,
-                      created_at timestamp NOT NULL,
-                      updated_at timestamp NOT NULL,
+                      created_at timestamp NULL,
+                      updated_at timestamp NULL,
                       status BOOLEAN DEFAULT TRUE,
                       email VARCHAR UNIQUE NOT NULL,
                       first_name varchar(128), 

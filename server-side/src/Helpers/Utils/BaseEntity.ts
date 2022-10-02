@@ -12,11 +12,19 @@ export abstract class BaseEntity {
   public readonly id: number
 
   @Field(() => Date)
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({
+    readonly: true,
+    name: 'created_at',
+    type: 'timestamptz'
+  })
   public createdAt: Date
 
   @Field(() => Date)
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({
+    readonly: true,
+    name: 'updated_at',
+    type: 'timestamptz'
+  })
   public updatedAt: Date
 
   @Field(() => Boolean)

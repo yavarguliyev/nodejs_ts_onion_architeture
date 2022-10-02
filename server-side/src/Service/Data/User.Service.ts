@@ -1,4 +1,5 @@
 import { Service } from 'typedi'
+import { UserInputError } from 'apollo-server-core'
 
 import { ContainerHelper } from 'Helpers/IOC/Helpers/ContainerHelper'
 import { ContainerItems } from 'Helpers/IOC/Static/ContainerItems'
@@ -12,7 +13,48 @@ export class UserService implements IUserService {
     this.unitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)
   }
 
-  async getAll(): Promise<User[]> {
-    return await this.unitOfWork.User.getAll()
+  public async getAllUser(): Promise<User[]> {
+    return await this.unitOfWork.User.getAllUser()
+  }
+
+  public async getUserById(id: number): Promise<User> {
+    return await this.unitOfWork.User.getById(id)
+  }
+
+  public async getUserByEmail(email: string): Promise<User | undefined> {
+    return await this.unitOfWork.User.getByEmail(email)
+  }
+
+  public async createUser(
+    email: string,
+    firstName: string,
+    lastName: string,
+    password: string
+  ): Promise<User> {
+    const emailAlreadyExists = await this.unitOfWork.User.emailAlreadyExists(email)
+    if (emailAlreadyExists) {
+      throw new UserInputError('There is already a registered user with this email address.')
+    }
+
+    return await this.unitOfWork.User.create({
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      email,
+      firstName,
+      lastName,
+      password: await this.unitOfWork.User.hashPassword(password)
+    }, 'users')
+  }
+
+  public async updateUser(id: number, firstName: string, lastName: string): Promise<User> {
+    return await this.unitOfWork.User.update(id, {
+      updatedAt: new Date(),
+      firstName,
+      lastName
+    }, 'users')
+  }
+
+  public async deleteUser(id: number): Promise<boolean> {
+    return await this.unitOfWork.User.delete(id, 'users')
   }
 }
