@@ -1,5 +1,5 @@
 import { Service } from 'typedi'
-import { Repository, EntitySchema } from 'typeorm'
+import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 
 import { IUnitOfWork } from 'Core/IUnitOfWork'
@@ -14,7 +14,7 @@ const { DB_CONNECTION } = config
 export class UnitOfWork implements IUnitOfWork {
   constructor(
     @InjectRepository(User, DB_CONNECTION)
-    private userRepository: Repository<EntitySchema<User>>
+    private userRepository: Repository<User>
   ) { }
 
   User: IUserRepository = new UserRepository(this.userRepository)
