@@ -25,18 +25,17 @@ export class UserService implements IUserService {
     return await this.unitOfWork.User.getByEmail(email)
   }
 
-  public async createUser(
+  public async addUser(
     email: string,
     firstName: string,
     lastName: string,
     password: string
   ): Promise<User> {
-    const emailAlreadyExists = await this.unitOfWork.User.emailAlreadyExists(email)
-    if (emailAlreadyExists) {
+    if (await this.unitOfWork.User.emailAlreadyExists(email)) {
       throw new UserInputError('There is already a registered user with this email address.')
     }
 
-    return await this.unitOfWork.User.create({
+    return await this.unitOfWork.User.add({
       createdAt: new Date(),
       updatedAt: new Date(),
       email,
@@ -54,7 +53,7 @@ export class UserService implements IUserService {
     }, 'users')
   }
 
-  public async deleteUser(id: number): Promise<boolean> {
-    return await this.unitOfWork.User.delete(id, 'users')
+  public async removeUser(id: number): Promise<boolean> {
+    return await this.unitOfWork.User.remove(id, 'users')
   }
 }
