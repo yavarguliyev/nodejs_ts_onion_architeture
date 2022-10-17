@@ -6,6 +6,7 @@ import { ContainerItems } from 'Helpers/IOC/Static/ContainerItems'
 import { IUnitOfWork } from 'Core/IUnitOfWork'
 import { IUserService } from 'Core/Services/Data/IUser.Service'
 import User from 'Core/Entities/User'
+import { Gender } from 'Core/Enums/Gender.Enum'
 
 @Service()
 export class UserService implements IUserService {
@@ -14,7 +15,7 @@ export class UserService implements IUserService {
   }
 
   public async getAllUser(): Promise<User[]> {
-    return await this.unitOfWork.User.getAllUser()
+    return await this.unitOfWork.User.getAll('users')
   }
 
   public async getUserById(id: number): Promise<User> {
@@ -29,6 +30,7 @@ export class UserService implements IUserService {
     email: string,
     firstName: string,
     lastName: string,
+    gender: Gender,
     password: string
   ): Promise<User> {
     if (await this.unitOfWork.User.emailAlreadyExists(email)) {
@@ -41,6 +43,7 @@ export class UserService implements IUserService {
       email,
       firstName,
       lastName,
+      gender,
       password: await this.unitOfWork.User.hashPassword(password)
     }, 'users')
   }

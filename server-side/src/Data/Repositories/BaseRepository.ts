@@ -6,8 +6,10 @@ import { IBaseRepository } from 'Core/Repositories/IBaseRepository'
 export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepository<TEntity> {
   constructor(protected repository: Repository<TEntity>) {}
 
-  public async getAll(): Promise<TEntity[]> {
-    return (await this.repository.find()) as unknown as TEntity[]
+  public async getAll(entity: string): Promise<TEntity[]> {
+    return (await this.repository
+      .createQueryBuilder(entity)
+      .getMany())
   }
 
   public async getById(id: number): Promise<TEntity> {
@@ -17,22 +19,6 @@ export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepos
     }
 
     return entity as unknown as TEntity
-  }
-
-  public async getByEmail(email: string): Promise<TEntity | undefined> {
-    const entity = await this.repository.findOne({ where: { email } })
-    if (!entity) {
-      throw new UserInputError(`Entity with email: ${email} not found.`)
-    }
-
-    return entity as unknown as TEntity
-  }
-
-  public async emailAlreadyExists(email: string): Promise<boolean> {
-    const emailAlreadyExists = await this.repository.findOne({ where: { email } })
-    if (!emailAlreadyExists) return false
-
-    return true
   }
 
   public async add(options: any, entity: string): Promise<TEntity> {

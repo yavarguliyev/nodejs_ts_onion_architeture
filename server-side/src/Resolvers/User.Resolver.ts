@@ -29,13 +29,13 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  public async getUserByEmail(@Args() { email }: GetUserByEmailArgs) {
+  public async getUserByEmail(@Args() { email }: GetUserByEmailArgs): Promise<User | undefined> {
     return await this.userService.getUserByEmail(email)
   }
 
   @Mutation(() => User)
-  public async createUser (@Args() { email, firstName, lastName, password }: CreateUserArgs): Promise<User> {
-    return await this.userService.addUser(email.toLowerCase(), firstName, lastName, password)
+  public async createUser (@Args() { email, firstName, lastName, gender, password }: CreateUserArgs): Promise<User> {
+    return await this.userService.addUser(email.toLowerCase(), firstName, lastName, gender, password)
   }
 
   @Mutation(() => User)

@@ -6,6 +6,7 @@ import {
   EMAIL_MIN_LENGTH_CONSTRAINT,
   PASSWORD_REGEXP
 } from 'Helpers/Dictionaries/UserManagement'
+import { Gender } from 'Core/Enums/Gender.Enum'
 
 @ArgsType()
 export class CreateUserArgs {
@@ -23,6 +24,10 @@ export class CreateUserArgs {
   @Field()
   @Length(1, 64, { message: 'Maximum number of allowed characters is 64.' })
   public lastName: string
+
+  @Field(() => Gender)
+  @Length(3, 16, { message: 'Maximum number of allowed characters is 16.' })
+  public gender: Gender
 
   @Field()
   @Matches(PASSWORD_REGEXP, {
