@@ -3,6 +3,7 @@ import { getConnectionOptions, ConnectionOptions } from 'typeorm'
 
 import { config } from 'Helpers/Config/main'
 import User from 'Core/Entities/User'
+import Role from 'Core/Entities/Role'
 
 const { DB_CONNECTION } = config
 
@@ -18,6 +19,7 @@ export class DBContextOptionsFactory implements IDBContextOptionsFactory {
       typeof connectionOptions.entities !== 'undefined' &&
       connectionOptions.entities.length === 0
     ) {
+      connectionOptions.entities.push(Role)
       connectionOptions.entities.push(User)
     }
 

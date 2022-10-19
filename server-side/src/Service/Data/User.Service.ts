@@ -7,6 +7,7 @@ import { IUnitOfWork } from 'Core/IUnitOfWork'
 import { IUserService } from 'Core/Services/Data/IUser.Service'
 import User from 'Core/Entities/User'
 import { Gender } from 'Core/Enums/Gender.Enum'
+import { Roles } from 'Core/Enums/Roles.Enum'
 
 @Service()
 export class UserService implements IUserService {
@@ -31,7 +32,8 @@ export class UserService implements IUserService {
     firstName: string,
     lastName: string,
     gender: Gender,
-    password: string
+    password: string,
+    role: Roles
   ): Promise<User> {
     if (await this.unitOfWork.User.emailAlreadyExists(email)) {
       throw new UserInputError('There is already a registered user with this email address.')
@@ -44,7 +46,8 @@ export class UserService implements IUserService {
       firstName,
       lastName,
       gender,
-      password: await this.unitOfWork.User.hashPassword(password)
+      password: await this.unitOfWork.User.hashPassword(password),
+      role: await this.unitOfWork.Role.findBy({ name: role })
     }, 'users')
   }
 

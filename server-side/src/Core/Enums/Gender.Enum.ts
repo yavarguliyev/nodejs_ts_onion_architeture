@@ -1,9 +1,9 @@
 import { registerEnumType } from 'type-graphql'
 
 export enum Gender {
-  Other = 'other',
-  Male = 'male',
-  Female = 'female'
+  Other = 'Other',
+  Male = 'Male',
+  Female = 'Female'
 }
 
 registerEnumType(Gender, {

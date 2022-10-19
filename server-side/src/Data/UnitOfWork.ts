@@ -7,6 +7,9 @@ import { IUserRepository } from 'Core/Repositories/IUser.Repository'
 import { UserRepository } from 'Data/Repositories/User.Repository'
 import User from 'Core/Entities/User'
 import { config } from 'Helpers/Config/main'
+import Role from 'Core/Entities/Role'
+import { IRoleRepository } from 'Core/Repositories/IRole.Repository'
+import { RoleRepository } from 'Data/Repositories/Role.Repository'
 
 const { DB_CONNECTION } = config
 
@@ -14,9 +17,12 @@ const { DB_CONNECTION } = config
 export class UnitOfWork implements IUnitOfWork {
   constructor(
     @InjectRepository(User, DB_CONNECTION)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Role, DB_CONNECTION)
+    private roleRepository: Repository<Role>
   ) { }
 
+  Role: IRoleRepository = new RoleRepository(this.roleRepository)
   User: IUserRepository = new UserRepository(this.userRepository)
 
   async CommitAsync(): Promise<number> {

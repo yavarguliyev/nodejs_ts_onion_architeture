@@ -4,7 +4,7 @@ import { UserInputError } from 'apollo-server-core'
 import { IBaseRepository } from 'Core/Repositories/IBaseRepository'
 
 export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepository<TEntity> {
-  constructor(protected repository: Repository<TEntity>) {}
+  constructor(protected repository: Repository<TEntity>) { }
 
   public async getAll(entity: string): Promise<TEntity[]> {
     return (await this.repository
@@ -18,7 +18,11 @@ export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepos
       throw new UserInputError(`Entity with id: ${id} not found.`)
     }
 
-    return entity as unknown as TEntity
+    return entity
+  }
+
+  public async findBy(prop: any): Promise<TEntity> {
+    return await this.repository.findOneOrFail({ where: prop })
   }
 
   public async add(options: any, entity: string): Promise<TEntity> {

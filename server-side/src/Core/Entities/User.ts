@@ -1,9 +1,10 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { Field, ObjectType } from 'type-graphql'
 import { IsEmail, IsString, Length } from 'class-validator'
 
 import { BaseEntity } from 'Helpers/Utils/BaseEntity'
 import { Gender } from 'Core/Enums/Gender.Enum'
+import Role from 'Core/Entities/Role'
 
 @Entity('users')
 @ObjectType()
@@ -39,7 +40,16 @@ export default class User extends BaseEntity {
   @Length(8, 256)
   public password: string
 
+  @Column({ name: 'token', type: 'varchar', nullable: true })
+  @IsString()
+  token: string | null
+
   @Column({ name: 'reset_token', type: 'varchar', nullable: true })
   @IsString()
-  public resetToken: string | null
+  resetToken: string | null
+
+  @Field(() => Role)
+  @ManyToOne(() => Role, role => role.id)
+  @JoinColumn({ name: 'role_id' })
+  public role: Role
 }

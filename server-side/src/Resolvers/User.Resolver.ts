@@ -34,8 +34,8 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  public async createUser (@Args() { email, firstName, lastName, gender, password }: CreateUserArgs): Promise<User> {
-    return await this.userService.addUser(email.toLowerCase(), firstName, lastName, gender, password)
+  public async addUser(@Args() { email, firstName, lastName, gender, password, role }: CreateUserArgs): Promise<User> {
+    return await this.userService.addUser(email.toLowerCase(), firstName, lastName, gender, password, role)
   }
 
   @Mutation(() => User)
@@ -44,7 +44,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  public async deleteUser(@Args() { id }: DeleteUserArgs): Promise<boolean> {
+  public async removeUser(@Args() { id }: DeleteUserArgs): Promise<boolean> {
     return await this.userService.removeUser(id)
   }
 }

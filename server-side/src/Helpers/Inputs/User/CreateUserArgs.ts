@@ -7,6 +7,7 @@ import {
   PASSWORD_REGEXP
 } from 'Helpers/Dictionaries/UserManagement'
 import { Gender } from 'Core/Enums/Gender.Enum'
+import { Roles } from 'Core/Enums/Roles.Enum'
 
 @ArgsType()
 export class CreateUserArgs {
@@ -34,4 +35,8 @@ export class CreateUserArgs {
     message: 'Password should contain at least 8 characters with uppercase, lowercase and numbers.'
   })
   public password: string
+
+  @Field(() => Roles)
+  @Length(3, 16, { message: 'Maximum number of allowed characters is 16.' })
+  public role: Roles
 }
