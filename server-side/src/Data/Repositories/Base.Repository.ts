@@ -1,7 +1,7 @@
 import { Repository, ObjectLiteral } from 'typeorm'
 import { UserInputError } from 'apollo-server-core'
 
-import { IBaseRepository } from 'Core/Repositories/IBaseRepository'
+import { IBaseRepository } from 'Core/Repositories/IBase.Repository'
 
 export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepository<TEntity> {
   constructor(protected repository: Repository<TEntity>) { }

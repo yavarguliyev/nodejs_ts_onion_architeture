@@ -1,5 +1,6 @@
 export const ContainerItems = {
   IUnitOfWork: 'IUnitOfWork',
   IRoleService: 'IRoleService',
-  IUserService: 'IUserService'
+  IUserService: 'IUserService',
+  IAuthService: 'IAuthService'
 }

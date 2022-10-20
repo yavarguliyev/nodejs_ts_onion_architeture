@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 
-import { BaseRepository } from 'Data/Repositories/BaseRepository'
+import { BaseRepository } from 'Data/Repositories/Base.Repository'
 import Role from 'Core/Entities/Role'
 import { IRoleRepository } from 'Core/Repositories/IRole.Repository'
 

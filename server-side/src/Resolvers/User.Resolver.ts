@@ -1,8 +1,8 @@
 import { Service } from 'typedi'
-import { Args, Mutation, Query, Resolver } from 'type-graphql'
+import { Args, Authorized, Mutation, Query, Resolver } from 'type-graphql'
 
 import User from 'Core/Entities/User'
-import { UserService } from 'Service/Data/User.Service'
+import { UserService } from 'Services/Data/User.Service'
 import { ContainerHelper } from 'Helpers/IOC/Helpers/ContainerHelper'
 import { ContainerItems } from 'Helpers/IOC/Static/ContainerItems'
 import { GetUserByIdArgs } from 'Helpers/Inputs/User/GetUserByIdArgs'
@@ -10,6 +10,7 @@ import { GetUserByEmailArgs } from 'Helpers/Inputs/User/GetUserByEmailArgs'
 import { CreateUserArgs } from 'Helpers/Inputs/User/CreateUserArgs'
 import { UpdateUserArgs } from 'Helpers/Inputs/User/UpdateUserArgs'
 import { DeleteUserArgs } from 'Helpers/Inputs/User/DeleteUserArgs'
+import { Roles } from 'Core/Enums/Roles.Enum'
 
 @Service()
 @Resolver()
@@ -23,6 +24,7 @@ export class UserResolver {
    return await this.userService.getAllUser()
   }
 
+  @Authorized([Roles.GlobalAdmin])
   @Query(() => User)
   public async getUserById(@Args() { id }: GetUserByIdArgs) {
     return await this.userService.getUserById(id)

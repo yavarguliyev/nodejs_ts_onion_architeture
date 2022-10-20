@@ -3,11 +3,13 @@ import { useContainer, ConnectionManager } from 'typeorm'
 import express from 'express'
 import cors from 'cors'
 import http from 'http'
+import passport from 'passport'
 
 import { config } from 'Helpers/Config/main'
 import { DBContextOptionsFactory } from 'Data/DataContext'
 import { configureServices } from 'Helpers/IOC/Bindings'
 import { ApolloServerService } from 'Helpers/Infrastructure/ApolloServer.Service'
+import { AuthStrategyFactoryServie } from 'Helpers/Infrastructure/AuthStrategyFactory.Service'
 
 const { NODE_PORT, NODE_ENV } = config
 
@@ -18,6 +20,12 @@ const initialize = async () => {
   const connectionOptions = await Container.get(DBContextOptionsFactory).create()
 
   await Container.get(ConnectionManager).create({ ...connectionOptions }).connect()
+
+  const authStrategies = Container.get(AuthStrategyFactoryServie).buildStrategies()
+
+  for (const strategy of authStrategies) {
+    passport.use(strategy)
+  }
 
   const apolloServer = await Container.get(ApolloServerService).get()
 

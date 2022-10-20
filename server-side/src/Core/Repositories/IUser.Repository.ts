@@ -1,4 +1,4 @@
-import { IBaseRepository } from 'Core/Repositories/IBaseRepository'
+import { IBaseRepository } from 'Core/Repositories/IBase.Repository'
 import User from 'Core/Entities/User'
 
 export interface IUserRepository extends IBaseRepository<User> {

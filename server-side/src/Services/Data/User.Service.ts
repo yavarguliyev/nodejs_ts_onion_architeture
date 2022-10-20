@@ -11,9 +11,9 @@ import { Roles } from 'Core/Enums/Roles.Enum'
 
 @Service()
 export class UserService implements IUserService {
-  constructor(private unitOfWork: IUnitOfWork) {
-    this.unitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)
-  }
+  constructor(
+    private unitOfWork: IUnitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)
+  ) {}
 
   public async getAllUser(): Promise<User[]> {
     return await this.unitOfWork.User.getAll('users')

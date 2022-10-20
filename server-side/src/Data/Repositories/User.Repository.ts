@@ -3,13 +3,13 @@ import { UserInputError } from 'apollo-server-core'
 import { hash } from 'bcrypt'
 
 import { IUserRepository } from 'Core/Repositories/IUser.Repository'
-import { BaseRepository } from 'Data/Repositories/BaseRepository'
+import { BaseRepository } from 'Data/Repositories/Base.Repository'
 import User from 'Core/Entities/User'
 
 @Service()
 export class UserRepository extends BaseRepository<User> implements IUserRepository {
   public async getByEmail(email: string): Promise<User | undefined> {
-    const user = await this.repository.findOne({ where: { email } })
+    const user = await this.repository.findOne({ where: { email }, relations: ['role'] })
     if (!user) {
       throw new UserInputError(`User with email: ${email} not found.`)
     }

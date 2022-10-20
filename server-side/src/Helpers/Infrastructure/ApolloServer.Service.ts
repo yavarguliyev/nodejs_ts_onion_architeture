@@ -5,6 +5,9 @@ import { GraphQLSchema, GraphQLError, GraphQLFormattedError } from 'graphql'
 import { buildSchema, ArgumentValidationError } from 'type-graphql'
 
 import { UserResolver } from 'Resolvers/User.Resolver'
+import { AuthGuard } from 'Helpers/Middlewares/AuthGuard'
+import { AuthResolver } from 'Resolvers/Auth.Resolver'
+import { generateContext } from 'Helpers/Utils/GenerateContext'
 
 export interface IApolloServerService {
   get (): Promise<ApolloServer>
@@ -29,8 +32,10 @@ export class ApolloServerService implements IApolloServerService {
       container: Container,
       emitSchemaFile: true,
       resolvers: [
-        UserResolver
-      ]
+        UserResolver,
+        AuthResolver
+      ],
+      authChecker: AuthGuard
     })
   }
 
@@ -59,6 +64,12 @@ export class ApolloServerService implements IApolloServerService {
     return new ApolloServer({
       schema: await this.buildSchema(),
       plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+      context: async function (arg) {
+        const req = arg.req
+        const context = await generateContext({ ...arg, req })
+
+        return context
+      },
       formatError: this.formatError
     })
   }
