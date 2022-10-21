@@ -40,11 +40,6 @@ export default class User extends BaseEntity {
   @Length(8, 256)
   public password: string
 
-  @Field(() => String)
-  @Column({ name: 'token', type: 'varchar', nullable: true })
-  @IsString()
-  token: string | null
-
   @Column({ name: 'reset_token', type: 'varchar', nullable: true })
   @IsString()
   resetToken: string | null

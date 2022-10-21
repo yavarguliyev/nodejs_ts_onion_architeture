@@ -1,10 +1,13 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import { IUnitOfWork } from 'Core/IUnitOfWork'
+import { config } from 'Helpers/Config/main'
+
+const { JWT_SECRET_KEY } = config
 
 const jwtStrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'JWT_SECRET_KEY'
+  secretOrKey: JWT_SECRET_KEY
 }
 
 const jwtStrategy = (strategies: Strategy[], unitOfWork: IUnitOfWork): void => {

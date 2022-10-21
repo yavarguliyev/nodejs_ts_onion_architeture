@@ -10,6 +10,7 @@ import { DBContextOptionsFactory } from 'Data/DataContext'
 import { configureServices } from 'Helpers/IOC/Bindings'
 import { ApolloServerService } from 'Helpers/Infrastructure/ApolloServer.Service'
 import { AuthStrategyFactoryServie } from 'Helpers/Infrastructure/AuthStrategyFactory.Service'
+import router from 'Helpers/Routes/Routes'
 
 const { NODE_PORT, NODE_ENV } = config
 
@@ -34,6 +35,8 @@ const initialize = async () => {
   app.use(express.json())
 
   app.use(cors({ credentials: true }))
+
+  app.use(router)
 
   await apolloServer.start()
   apolloServer.applyMiddleware({ app })

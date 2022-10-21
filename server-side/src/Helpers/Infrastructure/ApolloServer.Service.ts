@@ -6,7 +6,6 @@ import { buildSchema, ArgumentValidationError } from 'type-graphql'
 
 import { UserResolver } from 'Resolvers/User.Resolver'
 import { AuthGuard } from 'Helpers/Middlewares/AuthGuard'
-import { AuthResolver } from 'Resolvers/Auth.Resolver'
 import { generateContext } from 'Helpers/Utils/GenerateContext'
 
 export interface IApolloServerService {
@@ -32,8 +31,7 @@ export class ApolloServerService implements IApolloServerService {
       container: Container,
       emitSchemaFile: true,
       resolvers: [
-        UserResolver,
-        AuthResolver
+        UserResolver
       ],
       authChecker: AuthGuard
     })

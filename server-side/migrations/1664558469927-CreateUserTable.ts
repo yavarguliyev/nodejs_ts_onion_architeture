@@ -16,7 +16,6 @@ export class CreateUserTable1664558469927 implements MigrationInterface {
                 last_name varchar(64),
                 gender gender_type NULL,
                 password VARCHAR NOT NULL,
-                token VARCHAR DEFAULT NULL,
                 reset_token VARCHAR DEFAULT NULL
             );`
         )

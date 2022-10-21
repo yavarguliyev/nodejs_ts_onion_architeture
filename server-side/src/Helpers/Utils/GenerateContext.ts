@@ -31,6 +31,7 @@ export const generateContext = async (expressContext: ExpressContext) => {
   const token = req.headers.authorization
     ? req.headers.authorization.split(' ')[1]
     : ''
+  
   const context: AppContext = { req, res, user, token }
 
   return context

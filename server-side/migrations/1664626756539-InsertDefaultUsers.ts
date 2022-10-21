@@ -6,7 +6,7 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class InsertDefaultUsers1664626756539 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            INSERT INTO users (created_at, updated_at, status, email, first_name, last_name, gender, password, token, reset_token, role_id) 
+            INSERT INTO users (created_at, updated_at, status, email, first_name, last_name, gender, password, reset_token, role_id) 
             VALUES (
                     CURRENT_TIMESTAMP,
                     CURRENT_TIMESTAMP,
@@ -16,7 +16,6 @@ export class InsertDefaultUsers1664626756539 implements MigrationInterface {
                     'Guliyev',
                     'Male',
                     '$2b$10$uB8DMBtv1j/J0/Ocf7g3Z.uxXTcOchQPtU9J37Lfvoj8bWNAFWHTO',
-                    NULL,
                     NULL,
                     1
                 );
