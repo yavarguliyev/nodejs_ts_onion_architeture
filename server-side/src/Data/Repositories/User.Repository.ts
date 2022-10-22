@@ -18,10 +18,7 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
   }
 
   public async emailAlreadyExists(email: string): Promise<boolean> {
-    const emailAlreadyExists = await this.repository.findOne({ where: { email } })
-    if (!emailAlreadyExists) return false
-
-    return true
+    return !!await this.repository.findOne({ where: { email } })
   }
 
   public async hashPassword(password: string): Promise<string> {
