@@ -27,8 +27,4 @@ export class UnitOfWork implements IUnitOfWork {
   Role: IRoleRepository = new RoleRepository(this.roleRepository)
   User: IUserRepository = new UserRepository(this.userRepository)
   Auth: IAuthRepository = new AuthRepository(this.userRepository)
-
-  async CommitAsync(): Promise<number> {
-    return 0
-  }
 }

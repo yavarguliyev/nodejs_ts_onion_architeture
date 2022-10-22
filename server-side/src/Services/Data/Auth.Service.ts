@@ -9,15 +9,9 @@ import { LoginResponse } from 'Helpers/Utils/LoginResponse'
 
 @Service()
 export class AuthService implements IAuthService {
-  constructor(
-    private unitOfWork: IUnitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)
-  ) {}
+  constructor(private unitOfWork: IUnitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)) {}
 
-  public async login(email: string, password: string): Promise<LoginResponse> {
-    return await this.unitOfWork.Auth.login(email, password)
-  }
+  public login = async (email: string, password: string): Promise<LoginResponse> => await this.unitOfWork.Auth.login(email, password)
 
-  public async currentUser(email: string): Promise<User> {
-    return await this.unitOfWork.Auth.currentUser(email)
-  }
+  public currentUser = async (email: string): Promise<User> => await this.unitOfWork.Auth.currentUser(email)
 }

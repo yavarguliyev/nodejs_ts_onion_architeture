@@ -15,17 +15,11 @@ export class UserService implements IUserService {
     private unitOfWork: IUnitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)
   ) {}
 
-  public async getAllUser(): Promise<User[]> {
-    return await this.unitOfWork.User.getAll('users')
-  }
+  public getAllUser = async (): Promise<User[]> => await this.unitOfWork.User.getAll('users') as unknown as User[]
 
-  public async getUserById(id: number): Promise<User> {
-    return await this.unitOfWork.User.getById(id)
-  }
+  public getUserById = async (id: number): Promise<User> => await this.unitOfWork.User.getById(id) as unknown as User
 
-  public async getUserByEmail(email: string): Promise<User | undefined> {
-    return await this.unitOfWork.User.getByEmail(email)
-  }
+  public getUserByEmail = async (email: string): Promise<User | undefined> => await this.unitOfWork.User.getByEmail(email)
 
   public async addUser(
     email: string,
@@ -48,18 +42,14 @@ export class UserService implements IUserService {
       gender,
       password: await this.unitOfWork.User.hashPassword(password),
       role: await this.unitOfWork.Role.findBy({ name: role })
-    }, 'users')
+    }, 'users') as unknown as User
   }
 
-  public async updateUser(id: number, firstName: string, lastName: string): Promise<User> {
-    return await this.unitOfWork.User.update(id, {
-      updatedAt: new Date(),
-      firstName,
-      lastName
-    }, 'users')
-  }
+  public updateUser = async (id: number, firstName: string, lastName: string): Promise<User> => await this.unitOfWork.User.update(id, {
+    updatedAt: new Date(),
+    firstName,
+    lastName
+  }, 'users') as unknown as User
 
-  public async removeUser(id: number): Promise<boolean> {
-    return await this.unitOfWork.User.remove(id, 'users')
-  }
+  public removeUser = async (id: number): Promise<boolean> => await this.unitOfWork.User.remove(id, 'users')
 }

@@ -6,5 +6,4 @@ export interface IUnitOfWork {
   Role: IRoleRepository
   Auth: IAuthRepository
   User: IUserRepository
-  CommitAsync(): Promise<number>
 }

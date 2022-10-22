@@ -39,7 +39,7 @@ const initialize = async () => {
   app.use(router)
 
   await apolloServer.start()
-  apolloServer.applyMiddleware({ app })
+  apolloServer.applyMiddleware({ app, path: '/graphql' })
   const httpServer = http.createServer(app)
 
   httpServer.listen({ port: NODE_PORT }, () =>

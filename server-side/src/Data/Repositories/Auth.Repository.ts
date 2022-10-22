@@ -13,7 +13,7 @@ const { JWT_SECRET_KEY, JWT_EXPIRES_IN } = config
 
 @Service()
 export class AuthRepository extends BaseRepository<User> implements IAuthRepository {
-  public async login (email: string, password: string): Promise<LoginResponse> {
+  public async login(email: string, password: string): Promise<LoginResponse> {
     const user = await this.repository.findOne({
       where: { email },
       relations: ['role']
@@ -27,7 +27,7 @@ export class AuthRepository extends BaseRepository<User> implements IAuthReposit
     if (!passwordMatch) {
       throw new AuthenticationError('Invalid credentials')
     }
-    
+
     const payload = {
       id: user.id,
       email: user.email,
@@ -50,7 +50,7 @@ export class AuthRepository extends BaseRepository<User> implements IAuthReposit
     return response
   }
 
-  public async currentUser (email: string): Promise<User> {
+  public async currentUser(email: string): Promise<User> {
     const user = await this.repository.findOne({
       where: { email },
       select: ['id', 'email', 'firstName', 'lastName'],

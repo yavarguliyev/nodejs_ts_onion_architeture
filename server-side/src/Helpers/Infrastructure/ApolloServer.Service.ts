@@ -1,12 +1,14 @@
 import { Service, Container } from 'typedi'
 import { ApolloServer, UserInputError } from 'apollo-server-express'
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
+import { ApolloServerPluginCacheControl, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 import { GraphQLSchema, GraphQLError, GraphQLFormattedError } from 'graphql'
 import { buildSchema, ArgumentValidationError } from 'type-graphql'
+import responseCachePlugin from 'apollo-server-plugin-response-cache'
 
 import { UserResolver } from 'Resolvers/User.Resolver'
 import { AuthGuard } from 'Helpers/Middlewares/AuthGuard'
 import { generateContext } from 'Helpers/Utils/GenerateContext'
+import LoggingPlugin from 'Helpers/Plugins/ApolloServer.Plugins'
 
 export interface IApolloServerService {
   get (): Promise<ApolloServer>
@@ -15,8 +17,6 @@ export interface IApolloServerService {
 @Service()
 export class ApolloServerService implements IApolloServerService {
   private server: ApolloServer
-
-  public constructor () {}
 
   public async get (): Promise<ApolloServer> {
     if (!this.server) {
@@ -61,14 +61,24 @@ export class ApolloServerService implements IApolloServerService {
   private async createServer (): Promise<ApolloServer> {
     return new ApolloServer({
       schema: await this.buildSchema(),
-      plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+      plugins: [
+        new LoggingPlugin(),
+        ApolloServerPluginLandingPageGraphQLPlayground(),
+        ApolloServerPluginCacheControl({ calculateHttpHeaders: false }),
+        responseCachePlugin({
+          sessionId: (requestContext: any) => (requestContext.request.http.headers.get('session-id') || null)
+        })
+      ],
       context: async function (arg) {
         const req = arg.req
         const context = await generateContext({ ...arg, req })
 
         return context
       },
-      formatError: this.formatError
+      formatError: this.formatError,
+      formatResponse: (response) => {
+        return response
+      }
     })
   }
 }
