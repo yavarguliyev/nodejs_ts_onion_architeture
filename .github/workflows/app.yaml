@@ -24,4 +24,4 @@ jobs:
        cache: 'npm'
 
     - name: Run build 🏁
-      run: cd server-side/deployment/dev && bash deploy.sh && cd ../.. && yarn && yarn start
+      run: cd server-side/deployment/dev && bash deploy.sh && cd ../.. && npm install && npm start
