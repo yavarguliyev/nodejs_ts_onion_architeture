@@ -8,7 +8,7 @@ import Role from 'Core/Entities/Role'
 
 @Entity('users')
 @ObjectType()
-export default class User extends BaseEntity { 
+export default class User extends BaseEntity {
   @Field(() => String)
   @Column({ type: 'varchar', length: 128 })
   @Length(8, 128)

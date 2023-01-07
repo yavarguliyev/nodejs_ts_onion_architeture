@@ -6,7 +6,7 @@ import { UnitOfWork } from 'Data/UnitOfWork'
 
 @Service()
 export class AuthStrategyFactoryServie {
-  constructor(
+  constructor (
     @Inject(() => UnitOfWork)
     private unitOfWork: UnitOfWork
   ) { }

@@ -12,7 +12,7 @@ const jwtStrategyOptions = {
 
 const jwtStrategy = (strategies: Strategy[], unitOfWork: IUnitOfWork): void => {
   strategies.push(new Strategy(jwtStrategyOptions, async (payload, done) => {
-    const user = await unitOfWork.User.getByEmail(payload.email)
+    const user = await unitOfWork.User.findOneByEmail(payload.email)
     if (!user) {
       return done(null, false, 'Unauthorized')
     }

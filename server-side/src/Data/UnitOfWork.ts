@@ -17,7 +17,7 @@ const { DB_CONNECTION } = config
 
 @Service()
 export class UnitOfWork implements IUnitOfWork {
-  constructor(
+  constructor (
     @InjectRepository(User, DB_CONNECTION)
     private userRepository: Repository<User>,
     @InjectRepository(Role, DB_CONNECTION)

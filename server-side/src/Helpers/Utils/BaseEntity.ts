@@ -1,9 +1,4 @@
-import {
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryGeneratedColumn
-} from 'typeorm'
+import { CreateDateColumn, UpdateDateColumn, Column, PrimaryGeneratedColumn } from 'typeorm'
 import { Field, Int, ObjectType } from 'type-graphql'
 
 @ObjectType()
@@ -11,7 +6,7 @@ export abstract class BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   public readonly id: number
-  
+
   @Field(() => Date)
   @CreateDateColumn({
     readonly: true,

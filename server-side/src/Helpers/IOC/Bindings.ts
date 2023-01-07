@@ -9,7 +9,7 @@ import { RoleService } from 'Services/Data/Role.Service'
 import { AuthService } from 'Services/Data/Auth.Service'
 import { IAuthService } from 'Core/Services/Data/IAuth.Service'
 
-export function configureServices() {
+export function configureServices () {
   ContainerHelper
     .addSingleton<IUnitOfWork>(ContainerItems.IUnitOfWork, UnitOfWork)
     .addSingleton<IRoleService>(ContainerItems.IRoleService, RoleService)

@@ -11,29 +11,29 @@ import { Roles } from 'Core/Enums/Roles.Enum'
 
 @Service()
 export class UserService implements IUserService {
-  constructor(
+  constructor (
     private unitOfWork: IUnitOfWork = ContainerHelper.get<IUnitOfWork>(ContainerItems.IUnitOfWork)
   ) {}
 
-  public getAllUser = async (): Promise<User[]> => await this.unitOfWork.User.getAll('users') as unknown as User[]
+  public async getMany (): Promise<User[]> {
+    return await this.unitOfWork.User.getMany('users') as unknown as User[]
+  }
 
-  public getUserById = async (id: number): Promise<User> => await this.unitOfWork.User.getById(id) as unknown as User
+  public async findOne (id: number): Promise<User> {
+    return await this.unitOfWork.User.findOne(id) as unknown as User
+  }
 
-  public getUserByEmail = async (email: string): Promise<User | undefined> => await this.unitOfWork.User.getByEmail(email)
+  public async findOneByEmail (email: string): Promise<User | undefined> {
+    return await this.unitOfWork.User.findOneByEmail(email)
+  }
 
-  public async addUser(
-    email: string,
-    firstName: string,
-    lastName: string,
-    gender: Gender,
-    password: string,
-    role: Roles
+  public async create (
+    email: string, firstName: string, lastName: string, gender: Gender, password: string, role: Roles
   ): Promise<User> {
-    if (await this.unitOfWork.User.emailAlreadyExists(email)) {
+    if (await this.unitOfWork.User.findOneExistingEmail(email)) {
       throw new UserInputError('There is already a registered user with this email address.')
     }
-
-    return await this.unitOfWork.User.add({
+    return await this.unitOfWork.User.create({
       createdAt: new Date(),
       updatedAt: new Date(),
       email,
@@ -41,15 +41,17 @@ export class UserService implements IUserService {
       lastName,
       gender,
       password: await this.unitOfWork.User.hashPassword(password),
-      role: await this.unitOfWork.Role.findBy({ name: role })
+      role: await this.unitOfWork.Role.findOneOrFail({ name: role })
     }, 'users') as unknown as User
   }
 
-  public updateUser = async (id: number, firstName: string, lastName: string): Promise<User> => await this.unitOfWork.User.update(id, {
-    updatedAt: new Date(),
-    firstName,
-    lastName
-  }, 'users') as unknown as User
+  public async update (id: number, firstName: string, lastName: string): Promise<User> {
+    return await this.unitOfWork.User.update(id, {
+      updatedAt: new Date(), firstName, lastName
+    }, 'users') as unknown as User
+  }
 
-  public removeUser = async (id: number): Promise<boolean> => await this.unitOfWork.User.remove(id, 'users')
+  public async delete (id: number): Promise<boolean> {
+    return await this.unitOfWork.User.delete(id, 'users')
+  }
 }

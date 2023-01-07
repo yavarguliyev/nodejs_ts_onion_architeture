@@ -13,7 +13,7 @@ export interface IDBContextOptionsFactory {
 
 @Service()
 export class DBContextOptionsFactory implements IDBContextOptionsFactory {
-  public async create(): Promise<ConnectionOptions> {
+  public async create (): Promise<ConnectionOptions> {
     const connectionOptions = await getConnectionOptions(DB_CONNECTION)
     if (
       typeof connectionOptions.entities !== 'undefined' &&
