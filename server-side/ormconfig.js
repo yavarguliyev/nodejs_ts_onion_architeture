@@ -12,6 +12,6 @@ module.exports = [
     cli: {
       migrationsDir: 'migrations'
     },
-    logging: ['query', 'error']
+    logging: ['error']
   }
 ]

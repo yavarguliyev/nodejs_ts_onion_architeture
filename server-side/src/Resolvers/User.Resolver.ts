@@ -15,38 +15,38 @@ import { Roles } from 'Core/Enums/Roles.Enum'
 @Service()
 @Resolver()
 export class UserResolver {
-  constructor(private userService: UserService) {
+  constructor (private userService: UserService) {
     this.userService = ContainerHelper.get(ContainerItems.IUserService)
   }
 
   @Query(() => [User])
-  public async getAllUsers(): Promise<User[]> {
-   return await this.userService.getAllUser()
+  public async getManyUsers (): Promise<User[]> {
+   return await this.userService.getMany()
   }
 
   @Authorized([Roles.GlobalAdmin])
   @Query(() => User)
-  public async getUserById(@Args() { id }: GetUserByIdArgs) {
-    return await this.userService.getUserById(id)
+  public async findOneUser (@Args() { id }: GetUserByIdArgs) {
+    return await this.userService.findOne(id)
   }
 
   @Query(() => User)
-  public async getUserByEmail(@Args() { email }: GetUserByEmailArgs): Promise<User | undefined> {
-    return await this.userService.getUserByEmail(email)
+  public async findOneUserByEmail (@Args() { email }: GetUserByEmailArgs): Promise<User | undefined> {
+    return await this.userService.findOneByEmail(email)
   }
 
   @Mutation(() => User)
-  public async addUser(@Args() { email, firstName, lastName, gender, password, role }: CreateUserArgs): Promise<User> {
-    return await this.userService.addUser(email.toLowerCase(), firstName, lastName, gender, password, role)
+  public async createUser (@Args() { email, firstName, lastName, gender, password, role }: CreateUserArgs): Promise<User> {
+    return await this.userService.create(email.toLowerCase(), firstName, lastName, gender, password, role)
   }
 
   @Mutation(() => User)
   public async updateUser (@Args() { id, firstName, lastName }: UpdateUserArgs): Promise<User> {
-    return await this.userService.updateUser(id, firstName, lastName)
+    return await this.userService.update(id, firstName, lastName)
   }
 
   @Mutation(() => Boolean)
-  public async removeUser(@Args() { id }: DeleteUserArgs): Promise<boolean> {
-    return await this.userService.removeUser(id)
+  public async deleteUser (@Args() { id }: DeleteUserArgs): Promise<boolean> {
+    return await this.userService.delete(id)
   }
 }

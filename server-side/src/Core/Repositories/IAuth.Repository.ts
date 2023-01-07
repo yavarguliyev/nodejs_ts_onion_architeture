@@ -3,6 +3,6 @@ import User from 'Core/Entities/User'
 import { LoginResponse } from 'Helpers/Utils/LoginResponse'
 
 export interface IAuthRepository extends IBaseRepository<User> {
-  login: (email: string, password: string) => Promise<LoginResponse>
+  signIn: (email: string, password: string) => Promise<LoginResponse>
   currentUser: (email: string) => Promise<User>
 }

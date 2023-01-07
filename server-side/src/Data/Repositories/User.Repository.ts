@@ -8,7 +8,7 @@ import User from 'Core/Entities/User'
 
 @Service()
 export class UserRepository extends BaseRepository<User> implements IUserRepository {
-  public async getByEmail(email: string): Promise<User | undefined> {
+  public async findOneByEmail (email: string): Promise<User | undefined> {
     const user = await this.repository.findOne({ where: { email }, relations: ['role'] })
     if (!user) {
       throw new UserInputError(`User with email: ${email} not found.`)
@@ -17,11 +17,11 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
     return user
   }
 
-  public async emailAlreadyExists(email: string): Promise<boolean> {
+  public async findOneExistingEmail (email: string): Promise<boolean> {
     return !!await this.repository.findOne({ where: { email } })
   }
 
-  public async hashPassword(password: string): Promise<string> {
+  public async hashPassword (password: string): Promise<string> {
     return await hash(password, 10)
   }
 }

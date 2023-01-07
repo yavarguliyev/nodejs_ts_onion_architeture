@@ -1,0 +1,27 @@
+name: push-changes
+
+on: [push, pull_request]
+jobs:
+  build:
+   runs-on: ubuntu-latest
+
+   strategy:
+     matrix:
+       node-version: [18.x]
+   
+     fail-fast: true
+
+   timeout-minutes: 5
+   steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Setup node env 📦
+      uses: actions/setup-node@v3
+      with:
+       node-version: ${{ matrix.node-version }}
+       registry-url: https://registry.npmjs.org
+       check-latest: true
+       cache: 'npm'
+
+    - name: Run build 🏁
+      run: cd deployment/dev && bash deploy.sh && yarn && yarn start

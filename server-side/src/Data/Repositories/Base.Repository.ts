@@ -8,14 +8,13 @@ import { config } from 'Helpers/Config/main'
 const { DB_CONNECTION } = config
 
 export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepository<TEntity> {
-  constructor(@InjectRepository(EntitySchema<TEntity>, DB_CONNECTION) protected repository: Repository<TEntity>) {}
+  constructor (@InjectRepository(EntitySchema<TEntity>, DB_CONNECTION) protected repository: Repository<TEntity>) {}
 
-  public getAll = async (entity: string): Promise<EntitySchema<TEntity>[]> =>
-    (await this.repository
-      .createQueryBuilder(entity)
-      .getMany()) as unknown as EntitySchema<TEntity>[]
+  public async getMany (entity: string): Promise<EntitySchema<TEntity>[]> {
+    return (await this.repository.createQueryBuilder(entity).getMany()) as unknown as EntitySchema<TEntity>[]
+  }
 
-  public async getById(id: number): Promise<EntitySchema<TEntity>> {
+  public async findOne (id: number): Promise<EntitySchema<TEntity>> {
     const entity = await this.repository.findOne({ where: { id } })
     if (!entity) {
       throw new UserInputError(`Entity with id: ${id} not found.`)
@@ -24,9 +23,11 @@ export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepos
     return entity as unknown as EntitySchema<TEntity>
   }
 
-  public findBy = async (prop: any): Promise<EntitySchema<TEntity>> => (await this.repository.findOneOrFail({ where: prop })) as unknown as EntitySchema<TEntity>
+  public async findOneOrFail (prop: any): Promise<EntitySchema<TEntity>> {
+    return (await this.repository.findOneOrFail({ where: prop })) as unknown as EntitySchema<TEntity>
+  }
 
-  public async add(options: any, entity: string): Promise<EntitySchema<TEntity>> {
+  public async create (options: any, entity: string): Promise<EntitySchema<TEntity>> {
     const newEntity = await this.repository
       .createQueryBuilder()
       .insert()
@@ -34,11 +35,11 @@ export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepos
       .values(options)
       .execute()
 
-    return (await this.getById(newEntity.generatedMaps[0].id)) as unknown as EntitySchema<TEntity>
+    return (await this.findOne(newEntity.generatedMaps[0].id)) as unknown as EntitySchema<TEntity>
   }
 
-  public async update(id: number, options: any, entity: string): Promise<EntitySchema<TEntity>> {
-    await this.getById(id)
+  public async update (id: number, options: any, entity: string): Promise<EntitySchema<TEntity>> {
+    await this.findOne(id)
     await this.repository
       .createQueryBuilder()
       .update(entity)
@@ -46,11 +47,11 @@ export class BaseRepository<TEntity extends ObjectLiteral> implements IBaseRepos
       .where('id = :id', { id })
       .execute()
 
-    return (await this.getById(id)) as unknown as EntitySchema<TEntity>
+    return (await this.findOne(id)) as unknown as EntitySchema<TEntity>
   }
 
-  public async remove(id: number, entity: string): Promise<boolean> {
-    await this.getById(id)
+  public async delete (id: number, entity: string): Promise<boolean> {
+    await this.findOne(id)
     const { affected } = await this.repository
       .createQueryBuilder()
       .delete()

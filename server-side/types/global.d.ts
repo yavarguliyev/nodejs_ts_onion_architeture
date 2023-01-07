@@ -1,0 +1,49 @@
+declare namespace NodeJS {
+  interface ProcessEnv {
+    DB_CONNECTION: string
+
+    AWS_ACCESS_KEY_ID: string
+    AWS_SECRET_ACCESS_KEY: string
+    AWS_REGION: string
+    AWS_ENDPOINT_URL: string
+    AWS_CREATE_BUCKET_IF_NOT_EXISTS: string
+    AWS_KMS_GENERATOR_KEY_ID: string
+
+    CORS_ALLOWED_ORIGINS: string
+
+    UPLOADS_USER_CONTENT_BUCKET: string
+    UPLOADS_PATH: string
+    UPLOADS_MAX_FILES: number
+    UPLOADS_MAX_FILE_SIZE: number
+    JWT_SECRET_KEY: string
+    JWT_EXPIRES_IN: string
+    GIT_BRANCH_FILE: string
+    DEFAULT_MINIMUM_JIVE_DATE: string
+    DEFAULT_MAXIMUM_JIVE_DATE: string
+    ODBC_CONNECTION_TIMEOUT_WITH_SECONDS: string
+    SESSION_EXPIRE_TIME_WITH_SECONDS: string
+    TEMP_FOLDER_PATH: string
+    MESSAGE_EXPIRE_TIME_WITH_SECONDS: string
+    EXPORT_APP_VERSION: string
+    MAX_CONNECTION_FAIL_COUNT?: string
+    MAX_CONNECTION_FAIL_TIMEOUT_WITH_SECONDS?: string
+
+    LOG_TO_FILE: string
+    LOG_TO_FILE_MIN_LEVEL: string
+    LOG_TO_CONSOLE: string
+    LOG_TO_CONSOLE_MIN_LEVEL: string
+    LOG_TO_LOGDNA: string
+    LOG_TO_LOGDNA_MIN_LEVEL: string
+    LOG_MAX_FILES: number
+    LOG_MAX_FILESIZE: number
+
+    LOGDNA_API_KEY: string
+    LOGDNA_HOSTNAME: string
+    LOGDNA_APPNAME: string
+
+    EMAIL_SERVER_CONFIGS: string
+    EMAIL_FROM: string
+
+    RESET_PASSWORD_TOKEN_EXPIRES_IN: string
+  }
+}
